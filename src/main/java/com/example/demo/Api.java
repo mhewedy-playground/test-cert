@@ -14,8 +14,14 @@ public class Api {
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/cert", produces = "application/octet-stream")
-    public byte[] cert() throws IOException {
-        byte[] bytes = FileCopyUtils.copyToByteArray(DemoApplication.class.getClassLoader().getResourceAsStream("cert"));
+    public byte[] cert(@RequestBody(required = false) byte[] input) throws IOException {
+        String certFile;
+        if (input == null || input.length < 100){
+            certFile = "cert";
+        }else{
+            certFile = "cert2";
+        }
+        byte[] bytes = FileCopyUtils.copyToByteArray(DemoApplication.class.getClassLoader().getResourceAsStream(certFile));
         System.out.println(bytes.length);
         return bytes;
     }
